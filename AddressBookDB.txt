@@ -1,11 +1,13 @@
-//UC1
+//UC1 Create database
+
 mysql> create database AddressBookDB;
 Query OK, 1 row affected (0.02 sec)
 
 mysql> use AddressBookDB;
 Database changed
 
-//UC2
+//UC2 Create table
+
 mysql> create table addressBook (id int auto_increment primary key, first_name varchar(50) not null, last_name varchar(50), address varchar(255), city varchar(20), state varchar(50), zip varchar(10), phone varchar(15), email varchar(100));
 Query OK, 0 rows affected (0.10 sec)
 
@@ -17,7 +19,8 @@ mysql> show tables;
 +-------------------------+
 1 row in set (0.01 sec)
 
-//UC3
+//UC3 insert contact
+
 mysql> insert into addressbook(first_name, last_name, address, city, state, zip, phone, email) values("Rohit", "Jadhav", "AP Khodad, Tal - Junnar, Dist - Pune", "Narayangaon", "Maharashtra", "410504", "7875678797", "jadhavrohit3004@gmail.com");
 Query OK, 1 row affected (0.03 sec)
 
@@ -28,3 +31,18 @@ mysql> select * from addressbook;
 |  1 | Rohit      | Jadhav    | AP Khodad, Tal - Junnar, Dist - Pune | Narayangaon | Maharashtra | 410504 | 7875678797 | jadhavrohit3004@gmail.com |
 +----+------------+-----------+--------------------------------------+-------------+-------------+--------+------------+---------------------------+
 1 row in set (0.00 sec)
+
+//UC4 Update contacts
+
+mysql> update addressbook set phone = "8805503582" where first_name = 'Rohit' and last_name = 'Jadhav';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from addressbook;
++----+------------+-----------+--------------------------------------+-------------+-------------+--------+------------+---------------------------+
+| id | first_name | last_name | address                              | city        | state       | zip    | phone      | email                     |
++----+------------+-----------+--------------------------------------+-------------+-------------+--------+------------+---------------------------+
+|  1 | Rohit      | Jadhav    | AP Khodad, Tal - Junnar, Dist - Pune | Narayangaon | Maharashtra | 410504 | 8805503582 | jadhavrohit3004@gmail.com |
+|  2 | Vaibhav    | Thete     | AP Khodad, Tal - Junnar, Dist - Pune | Narayangaon | Maharashtra | 410504 | 8329600808 | vaibhav21@gmail.com       |
++----+------------+-----------+--------------------------------------+-------------+-------------+--------+------------+---------------------------+
+2 rows in set (0.00 sec)
