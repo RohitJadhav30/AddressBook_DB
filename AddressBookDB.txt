@@ -1,0 +1,6 @@
+//UC1
+mysql> create database AddressBookDB;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use AddressBookDB;
+Database changed
