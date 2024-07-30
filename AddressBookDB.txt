@@ -6,6 +6,7 @@ Query OK, 1 row affected (0.02 sec)
 mysql> use AddressBookDB;
 Database changed
 
+------------------------------------------------------------------------------------------------------------------------------------------
 //UC2 Create table
 
 mysql> create table addressBook (id int auto_increment primary key, first_name varchar(50) not null, last_name varchar(50), address varchar(255), city varchar(20), state varchar(50), zip varchar(10), phone varchar(15), email varchar(100));
@@ -19,6 +20,7 @@ mysql> show tables;
 +-------------------------+
 1 row in set (0.01 sec)
 
+------------------------------------------------------------------------------------------------------------------------------------------
 //UC3 insert contact
 
 mysql> insert into addressbook(first_name, last_name, address, city, state, zip, phone, email) values("Rohit", "Jadhav", "AP Khodad, Tal - Junnar, Dist - Pune", "Narayangaon", "Maharashtra", "410504", "7875678797", "jadhavrohit3004@gmail.com");
@@ -32,6 +34,7 @@ mysql> select * from addressbook;
 +----+------------+-----------+--------------------------------------+-------------+-------------+--------+------------+---------------------------+
 1 row in set (0.00 sec)
 
+------------------------------------------------------------------------------------------------------------------------------------------
 //UC4 Update contacts
 
 mysql> update addressbook set phone = "8805503582" where first_name = 'Rohit' and last_name = 'Jadhav';
@@ -47,6 +50,7 @@ mysql> select * from addressbook;
 +----+------------+-----------+--------------------------------------+-------------+-------------+--------+------------+---------------------------+
 2 rows in set (0.00 sec)
 
+------------------------------------------------------------------------------------------------------------------------------------------
 //UC5 delete contact
 
 mysql> delete from addressbook where first_name = 'vaibhav';
@@ -60,6 +64,7 @@ mysql> select * from addressbook;
 +----+------------+-----------+--------------------------------------+-------------+-------------+--------+------------+---------------------------+
 1 row in set (0.00 sec)
 
+------------------------------------------------------------------------------------------------------------------------------------------
 //UC6 retrieve person
 
 mysql> select * from addressbook where city = 'Narayangaon';
@@ -71,6 +76,7 @@ mysql> select * from addressbook where city = 'Narayangaon';
 +----+------------+-----------+--------------------------------------+-------------+-------------+--------+------------+---------------------------+
 2 rows in set (0.00 sec)
 
+------------------------------------------------------------------------------------------------------------------------------------------
 //UC7 Size of addressBook using city and state
 
 mysql> select count(*) from addressbook where city = 'Narayangaon' and state = 'Maharashtra';
@@ -81,6 +87,7 @@ mysql> select count(*) from addressbook where city = 'Narayangaon' and state = '
 +----------+
 1 row in set (0.01 sec)
 
+------------------------------------------------------------------------------------------------------------------------------------------
 //UC8 sorting contacts
 
 mysql> select * from addressbook where city = "Narayangaon" order by first_name, last_name;
@@ -93,6 +100,7 @@ mysql> select * from addressbook where city = "Narayangaon" order by first_name,
 +----+------------+-----------+--------------------------------------+-------------+-------------+--------+------------+----------------------------+
 3 rows in set (0.01 sec)
 
+------------------------------------------------------------------------------------------------------------------------------------------
 //UC9 altering column
 
 mysql> alter table addressbook add column name varchar(100) not null, add column type varchar(50) not null;
@@ -130,4 +138,81 @@ mysql> select * from addressbook;
 |  6 | Vishal       | Vanjari   | Ap Shirpur, jalgaon                    | Jalgaon     | Maharashtra | 513254 | 9785491254 | vishalvanjari12@gmail.com  | Vishal Vanjari     | Colleague |
 |  7 | Akash        | Chaudhari | Ap Khodad, tal - Junnar, dist - Pune   | Narayangaon | Maharashtra | 410504 | 9745125846 | chaudhariakash21@gmail.com | Akash Chaudhari    | Family    |
 +----+--------------+-----------+----------------------------------------+-------------+-------------+--------+------------+----------------------------+--------------------+-----------+
+6 rows in set (0.00 sec)
+
+------------------------------------------------------------------------------------------------------------------------------------------
+//UC10 counting using type
+
+mysql> select type, count(*) from addressbook where type = "Friend";
++--------+----------+
+| type   | count(*) |
++--------+----------+
+| Friend |        2 |
++--------+----------+
+1 row in set (0.00 sec)
+
+------------------------------------------------------------------------------------------------------------------------------------------
+//UC11 Multiple types
+
+mysql> ALTER TABLE addressbook ADD COLUMN type_id INT, ADD CONSTRAINT fk_type FOREIGN KEY (type_id) REFERENCES types(id);
+Query OK, 6 rows affected (0.07 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE types (id INT AUTO_INCREMENT PRIMARY KEY, type VARCHAR(50) NOT NULL);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO types (type) VALUES ('Friend'),('Family'),('Colleague'), ('Personal');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> update addressbook set type_id = 1 where id in (3, 4);
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> update addressbook set type_id = 3 where id in (5, 6);
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> update addressbook set type_id = 2 where id = 7;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update addressbook set type_id = 4 where id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from addressbook;
++----+--------------+-----------+----------------------------------------+-------------+-------------+--------+------------+----------------------------+--------------------+---------+
+| id | first_name   | last_name | address                                | city        | state       | zip    | phone      | email                      | name               | type_id |
++----+--------------+-----------+----------------------------------------+-------------+-------------+--------+------------+----------------------------+--------------------+---------+
+|  1 | Rohit        | Jadhav    | AP Khodad, Tal - Junnar, Dist - Pune   | Narayangaon | Maharashtra | 410504 | 8805503582 | jadhavrohit3004@gmail.com  | Rohit Jadhav       |       4 |
+|  3 | Vaibhav      | Thete     | AP Khodad, Tal - Junnar, Dist - Pune   | Narayangaon | Maharashtra | 410504 | 8329600808 | vaibhav21@gmail.com        | vaibhav Thete      |       1 |
+|  4 | Gaurav       | Dhande    | AP Dombival, 09 Ashtvinayak Apartments | Dombivali   | Maharashtra | 421202 | 7977139767 | gpdhande12@gmail.com       | Gaurav Dhande      |       1 |
+|  5 | Satyaprakash | Singh     | pholpur MP                             | Pholpur     | Maharashtra | 506945 | 7854986234 | satyaprakash@gmail.com     | Satyaprakash Singh |       3 |
+|  6 | Vishal       | Vanjari   | Ap Shirpur, jalgaon                    | Jalgaon     | Maharashtra | 513254 | 9785491254 | vishalvanjari12@gmail.com  | Vishal Vanjari     |       3 |
+|  7 | Akash        | Chaudhari | Ap Khodad, tal - Junnar, dist - Pune   | Narayangaon | Maharashtra | 410504 | 9745125846 | chaudhariakash21@gmail.com | Akash Chaudhari    |       2 |
++----+--------------+-----------+----------------------------------------+-------------+-------------+--------+------------+----------------------------+--------------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select * from types;
++----+--------------+
+| id | type         |
++----+--------------+
+|  1 | Friend       |
+|  2 | Family       |
+|  3 | Professional |
+|  4 | Personal     |
++----+--------------+
+
+mysql> SELECT a.id, a.first_name, a.last_name, a.address, a.city, a.state, a.zip, a.phone, a.email, t.type AS type FROM addressbook a LEFT JOIN types t ON a.type_id = t.id;
++----+--------------+-----------+----------------------------------------+-------------+-------------+--------+------------+----------------------------+--------------+
+| id | first_name   | last_name | address                                | city        | state       | zip    | phone      | email                      | type         |
++----+--------------+-----------+----------------------------------------+-------------+-------------+--------+------------+----------------------------+--------------+
+|  1 | Rohit        | Jadhav    | AP Khodad, Tal - Junnar, Dist - Pune   | Narayangaon | Maharashtra | 410504 | 8805503582 | jadhavrohit3004@gmail.com  | Personal     |
+|  3 | Vaibhav      | Thete     | AP Khodad, Tal - Junnar, Dist - Pune   | Narayangaon | Maharashtra | 410504 | 8329600808 | vaibhav21@gmail.com        | Friend       |
+|  4 | Gaurav       | Dhande    | AP Dombival, 09 Ashtvinayak Apartments | Dombivali   | Maharashtra | 421202 | 7977139767 | gpdhande12@gmail.com       | Friend       |
+|  5 | Satyaprakash | Singh     | pholpur MP                             | Pholpur     | Maharashtra | 506945 | 7854986234 | satyaprakash@gmail.com     | Professional |
+|  6 | Vishal       | Vanjari   | Ap Shirpur, jalgaon                    | Jalgaon     | Maharashtra | 513254 | 9785491254 | vishalvanjari12@gmail.com  | Professional |
+|  7 | Akash        | Chaudhari | Ap Khodad, tal - Junnar, dist - Pune   | Narayangaon | Maharashtra | 410504 | 9745125846 | chaudhariakash21@gmail.com | Family       |
++----+--------------+-----------+----------------------------------------+-------------+-------------+--------+------------+----------------------------+--------------+
 6 rows in set (0.00 sec)
