@@ -216,4 +216,3 @@ mysql> SELECT a.id, a.first_name, a.last_name, a.address, a.city, a.state, a.zip
 |  7 | Akash        | Chaudhari | Ap Khodad, tal - Junnar, dist - Pune   | Narayangaon | Maharashtra | 410504 | 9745125846 | chaudhariakash21@gmail.com | Family       |
 +----+--------------+-----------+----------------------------------------+-------------+-------------+--------+------------+----------------------------+--------------+
 6 rows in set (0.00 sec)
-
